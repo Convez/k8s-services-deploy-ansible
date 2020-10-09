@@ -1,6 +1,8 @@
 # k8s-services-deploy-ansible
 Holds my the ansible playbook for automatically deploying any microservice architecture configuration on k8s
 
+A .kubeconfig file needs to be present in the folder in order to connect to the k8s cluster
+
 The ansible playbook automatically creates the namespace and deploys, according to definitions:
  - services
  - service accounts
