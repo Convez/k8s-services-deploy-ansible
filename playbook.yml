@@ -1,0 +1,52 @@
+- hosts: localhost
+  vars:
+    namespace_def: 'ansible-deploy'
+    service_definitions: "{{ lookup('template', 'service.definitions.yml') | from_yaml }}"
+  tasks:
+    - name: Create namespace
+      community.kubernetes.k8s:
+        kubeconfig: .kubeconfig
+        definition:
+          apiVersion: v1
+          kind: Namespace
+          metadata:
+            name: '{{ namespace_def }}'
+
+
+    - name: Define services
+      community.kubernetes.k8s:
+        kubeconfig: .kubeconfig
+        definition:
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: "{{item.name}}"
+            namespace: "{{namespace_def}}"
+            labels:
+              app: "{{item.name}}"
+              service: "{{item.name}}"
+          spec:
+            selector:
+              app: "{{item.name}}"
+            ports: "{{ lookup('template', './ports.template.yml') | from_yaml }}" 
+      with_items: '{{service_definitions}}'
+
+
+    - name: Define service accounts
+      community.kubernetes.k8s:
+        kubeconfig: .kubeconfig
+        definition:
+          apiVersion: v1
+          kind: ServiceAccount
+          metadata:          
+            namespace: '{{namespace_def}}'
+            name: '{{item.service_account_name}}'
+            labels:
+              account: '{{item.name}}'
+      with_items: '{{service_definitions}}'
+
+    - name: Define deployments
+      community.kubernetes.k8s:
+        kubeconfig: .kubeconfig
+        definition: "{{ lookup('template', 'deployment.template.yml') | from_yaml }}"
+      with_items: '{{service_definitions}}'

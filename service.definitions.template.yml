@@ -1,0 +1,16 @@
+- name: 'serviceName'
+  version: 'serviceVersion'
+  image: 'serviceImage'
+  service_account_name: 'serviceAccount'
+  replicas : 1
+  port_def:
+   - port: 80
+     name: http
+   - port: 443
+     name: https
+  env_def:
+    - name: 'ENV_VARIABLE_1'
+      value: 'FRANCO'
+    - name: 'ENV_VARIABLE_2'
+      value: 'PINO'
+

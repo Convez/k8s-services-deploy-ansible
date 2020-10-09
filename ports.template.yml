@@ -1,0 +1,4 @@
+{% for port in item.port_def %}
+- name: {{port.name}}
+  port: {{port.port}}
+{% endfor %}

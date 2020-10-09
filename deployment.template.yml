@@ -1,0 +1,30 @@
+{% set int_replicas = item.replicas | int %}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{item.name}}-{{item.version}}
+  namespace: {{namespace_def}}
+  labels:
+    app: {{item.name}}
+    version: {{item.version}}
+spec:
+  replicas: {{int_replicas}}
+  selector:
+    matchLabels:
+      app:  {{item.name}}
+      version: {{item.version}}
+  template:
+    metadata:
+      labels:
+        app:  {{item.name}}
+        version: {{item.version}}
+    spec:
+      serviceAccountName: {{item.service_account_name}}
+      containers:
+        - name:  {{item.name}}
+          image: {{item.image}}
+          imagePullPolicy: IfNotPresent
+          ports: {{ lookup('template', './containerPorts.template.yml') | from_yaml }}
+          when: item.port_def is defined
+          env: {{ lookup('template', './env.template.yml') | from_yaml }}
+          when: item.env_def is defined

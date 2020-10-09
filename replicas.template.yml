@@ -1,0 +1,6 @@
+api_version: v1
+kubeconfig: .kubeconfig
+kind: Deployment
+name: {item.name}
+namespace: {namespace_def}
+replicas: {item.replicas | int}
