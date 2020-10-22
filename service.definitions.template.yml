@@ -13,4 +13,6 @@
       value: 'FRANCO'
     - name: 'ENV_VARIABLE_2'
       value: 'PINO'
-
+  annotations:
+    - key: 'annotKey'
+      value: 'GIUVANNI'

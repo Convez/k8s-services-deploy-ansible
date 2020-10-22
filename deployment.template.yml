@@ -18,6 +18,7 @@ spec:
       labels:
         app:  {{item.name}}
         version: {{item.version}}
+      annotations: {{lookup('template', './annotations.template.yml') | from_yaml}} 
     spec:
       serviceAccountName: {{item.service_account_name}}
       containers:

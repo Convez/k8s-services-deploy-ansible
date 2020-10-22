@@ -1,0 +1,3 @@
+{% for a in item.annotations %}
+  {{a.key}}: {{a.value}}
+{% endfor %}
